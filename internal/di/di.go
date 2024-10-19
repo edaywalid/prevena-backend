@@ -6,6 +6,9 @@ import (
 
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/config"
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/handlers"
+	"github.com/edaywalid/pinktober-hackathon-backend/internal/repositories"
+	"github.com/edaywalid/pinktober-hackathon-backend/internal/seed"
+	"github.com/edaywalid/pinktober-hackathon-backend/internal/services"
 	"github.com/edaywalid/pinktober-hackathon-backend/pkg/logger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -21,11 +24,18 @@ type Container struct {
 }
 
 type (
-	Services     struct{}
-	Repositories struct{}
-	Handlers     struct {
+	Services struct {
+		ProductService *services.ProductService
+	}
+	Repositories struct {
+		productRepository    *repositories.ProductRepository
+		ingredientRepository *repositories.IngredientRepository
+	}
+	Handlers struct {
 		PingHandler    *handlers.PingHandler
 		SwaggerHandler *handlers.SwaggerHandler
+		ProductHandler *handlers.ProductHandler
+		SeedHandler    *handlers.SeedHandler
 	}
 	Databases struct {
 		DB *mongo.Database
@@ -53,10 +63,13 @@ func NewContainer(log *logger.MyLogger) (*Container, error) {
 	log.LogInfo().Msg("Databases initialized successfully")
 
 	log.LogInfo().Msg("Initializing services, repositories, and handlers")
-	container.InitServices()
-	log.LogInfo().Msg("Services initialized successfully")
+
 	container.InitRepositories()
 	log.LogInfo().Msg("Repositories initialized successfully")
+
+	container.InitServices()
+	log.LogInfo().Msg("Services initialized successfully")
+
 	container.InitHandlers()
 	log.LogInfo().Msg("Handlers initialized successfully")
 
@@ -82,13 +95,22 @@ func (c *Container) initDatabases() error {
 }
 
 func (c *Container) InitServices() {
-	services := &Services{}
+	services := &Services{
+		ProductService: services.NewProductService(
+			c.Repositories.productRepository,
+			c.Repositories.ingredientRepository,
+		),
+	}
 	c.Services = services
-
 }
 
 func (c *Container) InitRepositories() {
-	repositories := &Repositories{}
+	p_documents := c.Databases.DB.Collection("products")
+	i_documents := c.Databases.DB.Collection("ingredients")
+	repositories := &Repositories{
+		productRepository:    repositories.NewProductRepository(p_documents),
+		ingredientRepository: repositories.NewIngredientRepository(i_documents),
+	}
 	c.Repositories = repositories
 }
 
@@ -98,6 +120,15 @@ func (c *Container) InitHandlers() {
 		SwaggerHandler: handlers.NewSwaggerHandler(
 			c.Config,
 			c.Logger,
+		),
+		ProductHandler: handlers.NewProductHandler(
+			c.Services.ProductService,
+		),
+		SeedHandler: handlers.NewSeedHandler(
+			seed.NewSeeder(
+				c.Repositories.productRepository,
+				c.Repositories.ingredientRepository,
+			),
 		),
 	}
 	c.Handlers = handlers
