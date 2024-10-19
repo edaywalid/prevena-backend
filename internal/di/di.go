@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/edaywalid/pinktober-hackathon-backend/internal/cache"
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/config"
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/handlers"
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/repositories"
@@ -21,6 +22,7 @@ type Container struct {
 	Config       *config.Config
 	Databases    *Databases
 	Logger       *logger.MyLogger
+	Cache        *Cache
 }
 
 type (
@@ -39,6 +41,9 @@ type (
 	}
 	Databases struct {
 		DB *mongo.Database
+	}
+	Cache struct {
+		redis *cache.Redis
 	}
 )
 
@@ -102,6 +107,17 @@ func (c *Container) InitServices() {
 		),
 	}
 	c.Services = services
+}
+
+func (c *Container) InitCache() {
+	redis, err := cache.NewRedis("localhost:6379")
+	if err != nil {
+		c.Logger.LogError().Msgf("Error initializing redis: %v", err)
+		return
+	}
+	c.Cache = &Cache{
+		redis: redis,
+	}
 }
 
 func (c *Container) InitRepositories() {
