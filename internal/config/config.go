@@ -15,6 +15,7 @@ type Config struct {
 	PROD_URL            string
 	DOCS_URL            string
 	CORS_ALLOWED_ORIGIN string
+	REDIS_ADDR          string
 }
 
 func (c *Config) IsProduction() bool {
@@ -44,5 +45,6 @@ func LoadConfig() (*Config, error) {
 	config.PROD_URL = getEnv("PROD_URL", "")
 	config.DOCS_URL = getEnv("DOCS_URL", "")
 	config.CORS_ALLOWED_ORIGIN = getEnv("CORS_ALLOWED_ORIGIN", "")
+	config.REDIS_ADDR = getEnv("REDIS_ADDR", "localhost:6379")
 	return &config, nil
 }
