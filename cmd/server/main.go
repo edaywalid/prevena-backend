@@ -12,6 +12,11 @@ func main() {
 	log := logger.NewLogger()
 
 	container, err := di.NewContainer()
+	defer func() {
+		log.LogInfo().Msg("Closing container")
+		container.Close()
+	}()
+
 	if err != nil {
 		log.LogError().Msgf("Error creating container: %v", err)
 		return
