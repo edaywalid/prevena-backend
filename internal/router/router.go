@@ -7,5 +7,6 @@ import (
 
 func SetupRouter(container *di.Container) *mux.Router {
 	r := mux.NewRouter()
+	NewPingRouter(container).SetupRouter(r)
 	return r
 }
