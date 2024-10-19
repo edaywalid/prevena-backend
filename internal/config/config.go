@@ -8,12 +8,13 @@ import (
 )
 
 type Config struct {
-	ENV       string
-	PORT      string
-	MONGO_URI string
-	DB_NAME   string
-	PROD_URL  string
-	DOCS_URL  string
+	ENV                 string
+	PORT                string
+	MONGO_URI           string
+	DB_NAME             string
+	PROD_URL            string
+	DOCS_URL            string
+	CORS_ALLOWED_ORIGIN string
 }
 
 func (c *Config) IsProduction() bool {
@@ -42,5 +43,6 @@ func LoadConfig() (*Config, error) {
 	config.MONGO_URI = getEnv("MONGO_URI", "mongodb://localhost:27017")
 	config.PROD_URL = getEnv("PROD_URL", "")
 	config.DOCS_URL = getEnv("DOCS_URL", "")
+	config.CORS_ALLOWED_ORIGIN = getEnv("CORS_ALLOWED_ORIGIN", "")
 	return &config, nil
 }
