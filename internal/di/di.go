@@ -24,8 +24,8 @@ type (
 	Services     struct{}
 	Repositories struct{}
 	Handlers     struct {
-		PingHandler *handlers.PingHandler
 		PingHandler    *handlers.PingHandler
+		SwaggerHandler *handlers.SwaggerHandler
 	}
 	Databases struct {
 		DB *mongo.Database
@@ -94,8 +94,8 @@ func (c *Container) InitRepositories() {
 
 func (c *Container) InitHandlers() {
 	handlers := &Handlers{
-		PingHandler: handlers.NewPingHandler(),
 		PingHandler:    handlers.NewPingHandler(),
+		SwaggerHandler: handlers.NewSwaggerHandler(c.Config),
 	}
 	c.Handlers = handlers
 }
