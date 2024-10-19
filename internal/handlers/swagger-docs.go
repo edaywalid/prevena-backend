@@ -44,8 +44,9 @@ func (sh *SwaggerHandler) ServeYamlDocs(w http.ResponseWriter, r *http.Request) 
 func (sh *SwaggerHandler) ServeSwaggerUI() http.Handler {
 	url := "http://localhost:" + sh.config.PORT + "/swagger/doc.yaml"
 	if sh.config.IsProduction() {
-		url = sh.config.PROD_URL + "/swagger/doc.yaml"
+		url = sh.config.DOCS_URL
 	}
+
 	return httpSwagger.Handler(
 		httpSwagger.URL(url),
 	)
