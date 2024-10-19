@@ -3,14 +3,18 @@ module github.com/edaywalid/pinktober-hackathon-backend
 go 1.22.5
 
 require (
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gorilla/mux v1.8.1
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.33.0
+	github.com/swaggo/http-swagger v1.3.4
 	go.mongodb.org/mongo-driver v1.17.1
 )
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
 	github.com/go-openapi/spec v0.20.6 // indirect
@@ -23,7 +27,6 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
-	github.com/swaggo/http-swagger v1.3.4 // indirect
 	github.com/swaggo/swag v1.16.4 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
