@@ -9,5 +9,6 @@ func SetupRouter(container *di.Container) *mux.Router {
 	r := mux.NewRouter()
 	NewPingRouter(container).SetupRouter(r)
 	NewSwaggerRouter(container).SetupRouter(r)
+	NewProductRouter(container).SetupRouter(r)
 	return r
 }
