@@ -12,6 +12,7 @@ type Config struct {
 	PORT      string
 	MONGO_URI string
 	DB_NAME   string
+	PROD_URL  string
 }
 
 func (c *Config) IsProduction() bool {
@@ -38,5 +39,6 @@ func LoadConfig() (*Config, error) {
 	config.PORT = getEnv("PORT", "8080")
 	config.DB_NAME = getEnv("DB_NAME", "pinktober")
 	config.MONGO_URI = getEnv("MONGO_URI", "mongodb://localhost:27017")
+	config.PROD_URL = getEnv("PROD_URL", "")
 	return &config, nil
 }
