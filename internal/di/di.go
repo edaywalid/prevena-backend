@@ -108,7 +108,10 @@ func (c *Container) InitRepositories() {
 	p_documents := c.Databases.DB.Collection("products")
 	i_documents := c.Databases.DB.Collection("ingredients")
 	repositories := &Repositories{
-		productRepository:    repositories.NewProductRepository(p_documents),
+		productRepository: repositories.NewProductRepository(
+			p_documents,
+			i_documents,
+		),
 		ingredientRepository: repositories.NewIngredientRepository(i_documents),
 	}
 	c.Repositories = repositories
