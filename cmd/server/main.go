@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/di"
+	"github.com/edaywalid/pinktober-hackathon-backend/internal/middleware"
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/router"
 	"github.com/edaywalid/pinktober-hackathon-backend/pkg/logger"
 )
@@ -31,7 +32,10 @@ func main() {
 	log.LogInfo().Msg("Starting server")
 	log.LogInfo().Msgf("Server started on port %s", container.Config.PORT)
 
-	if err := http.ListenAndServe(":"+container.Config.PORT, router); err != nil {
+	if err := http.ListenAndServe(
+		":"+container.Config.PORT,
+		middleware.CorsMiddleware(router, container.Config),
+	); err != nil {
 		log.LogError().Msgf("Error starting server: %v", err)
 	}
 
