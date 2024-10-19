@@ -11,7 +11,8 @@ import (
 func main() {
 	log := logger.NewLogger()
 
-	container, err := di.NewContainer()
+	container, err := di.NewContainer(&log)
+
 	defer func() {
 		log.LogInfo().Msg("Closing container")
 		container.Close()
