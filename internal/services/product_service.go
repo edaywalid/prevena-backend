@@ -5,7 +5,6 @@ import (
 	"math"
 
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/dto"
-	"github.com/edaywalid/pinktober-hackathon-backend/internal/models"
 	"github.com/edaywalid/pinktober-hackathon-backend/internal/repositories"
 )
 
@@ -41,7 +40,7 @@ func (s *ProductService) GetPaginatedProducts(ctx context.Context, page, perPage
 	}, nil
 }
 
-func (s *ProductService) GetProductByBarcode(ctx context.Context, barcode string) (models.Product, error) {
+func (s *ProductService) GetProductByBarcode(ctx context.Context, barcode string) (dto.ProductDTO, error) {
 	return s.product_repo.GetProductByBarcode(ctx, barcode)
 }
 
