@@ -8,8 +8,10 @@ import (
 )
 
 type Config struct {
-	ENV  string
-	PORT string
+	ENV       string
+	PORT      string
+	MONGO_URI string
+	DB_NAME   string
 }
 
 func getEnv(key string, defaultValue string) string {
@@ -30,6 +32,7 @@ func LoadConfig() (*Config, error) {
 
 	config.ENV = getEnv("ENV", "development")
 	config.PORT = getEnv("PORT", "8080")
-
+	config.DB_NAME = getEnv("DB_NAME", "pinktober")
+	config.MONGO_URI = getEnv("MONGO_URI", "mongodb://localhost:27017")
 	return &config, nil
 }
