@@ -14,6 +14,10 @@ type Config struct {
 	DB_NAME   string
 }
 
+func (c *Config) IsProduction() bool {
+	return c.ENV == "production"
+}
+
 func getEnv(key string, defaultValue string) string {
 	if value := os.Getenv(key); value != "" {
 		return value
