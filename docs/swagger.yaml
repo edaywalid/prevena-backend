@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Cosmetic Analyzer API
+  description: API for analyzing cosmetic products and their ingredients.
+  version: 1.0.0
+servers:
+  - url: "http://localhost:8080"
+  - url: "https://pinktober-hackathon-backend-tbou.onrender.com/"
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        barcode:
+          type: string
+        name:
+          type: string
+        brand:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              risk_score:
+                type: number
+                format: float
+              risk_type:
+                type: string
+        overall_risk:
+          type: number
+          format: float
+    PaginatedResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        total_count:
+          type: integer
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total_pages:
+          type: integer
+    AnalyzeRequest:
+      type: object
+      properties:
+        ingredients:
+          type: array
+          items:
+            type: string
+    AnalyzeResponse:
+      type: object
+      properties:
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              risk_score:
+                type: number
+                format: float
+              risk_type:
+                type: string
+        overall_risk:
+          type: number
+          format: float
+  responses:
+    ProductNotFound:
+      description: Product not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    BadRequest:
+      description: Invalid request body
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+paths:
+  /products:
+    get:
+      summary: Get Products
+      description: Retrieves a paginated list of products.
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: "Page number (default: 1)"
+        - in: query
+          name: per_page
+          required: false
+          schema:
+            type: integer
+          description: "Number of items per page (default: 20, max: 100)"
+      responses:
+        "200":
+          description: A paginated response with the list of products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedResponse"
+  "/product/{barcode}":
+    get:
+      summary: Get Product by Barcode
+      description: Retrieves a specific product by its barcode.
+      parameters:
+        - in: path
+          name: barcode
+          required: true
+          schema:
+            type: string
+          description: The barcode of the product
+      responses:
+        "200":
+          description: A product object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          $ref: "#/components/responses/ProductNotFound"
+  /analyze:
+    post:
+      summary: Analyze Product
+      description: Analyzes a list of ingredients and returns risk information.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalyzeRequest"
+      responses:
+        "200":
+          description: Risk information about the ingredients.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyzeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
