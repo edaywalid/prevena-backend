@@ -1,11 +1,11 @@
 package models
 
 type Product struct {
-	Barcode     string       `json:"barcode" bson:"_id"`
-	Name        string       `json:"name" bson:"name"`
-	Brand       string       `json:"brand" bson:"brand"`
-	Ingredients []Ingredient `json:"ingredients" bson:"ingredients"`
-	OverallRisk float64      `json:"overall_risk" bson:"overall_risk"`
+	Barcode     string   `json:"barcode" bson:"_id"`
+	Name        string   `json:"name" bson:"name"`
+	Brand       string   `json:"brand" bson:"brand"`
+	Ingredients []string `json:"ingredients" bson:"ingredients"`
+	OverallRisk float64  `json:"overall_risk" bson:"overall_risk"`
 }
 
 type Ingredient struct {
