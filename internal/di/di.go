@@ -110,7 +110,7 @@ func (c *Container) InitServices() {
 }
 
 func (c *Container) InitCache() {
-	redis, err := cache.NewRedis("localhost:6379")
+	redis, err := cache.NewRedis(c.Config.REDIS_ADDR)
 	if err != nil {
 		c.Logger.LogError().Msgf("Error initializing redis: %v", err)
 		return
