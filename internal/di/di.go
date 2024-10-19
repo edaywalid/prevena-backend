@@ -94,8 +94,11 @@ func (c *Container) InitRepositories() {
 
 func (c *Container) InitHandlers() {
 	handlers := &Handlers{
-		PingHandler:    handlers.NewPingHandler(),
-		SwaggerHandler: handlers.NewSwaggerHandler(c.Config),
+		PingHandler: handlers.NewPingHandler(),
+		SwaggerHandler: handlers.NewSwaggerHandler(
+			c.Config,
+			c.Logger,
+		),
 	}
 	c.Handlers = handlers
 }
